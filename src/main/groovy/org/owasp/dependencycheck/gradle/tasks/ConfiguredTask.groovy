@@ -49,6 +49,7 @@ abstract class ConfiguredTask extends DefaultTask {
      * default from dependency-check-core is used.
      */
     protected void initializeSettings() {
+
         settings = new Settings()
 
         InputStream taskProperties = null
@@ -67,6 +68,9 @@ abstract class ConfiguredTask extends DefaultTask {
                 }
             }
         }
+
+        overwriteConfig()
+
         settings.setBooleanIfNotNull(AUTO_UPDATE, config.autoUpdate)
 
         String[] suppressionLists = determineSuppressions(config.suppressionFiles, config.suppressionFile)
@@ -175,6 +179,76 @@ abstract class ConfiguredTask extends DefaultTask {
         settings.setBooleanIfNotNull(ANALYZER_NODE_AUDIT_USE_CACHE, config.cache.nodeAudit)
         settings.setBooleanIfNotNull(ANALYZER_CENTRAL_USE_CACHE, config.cache.central)
         settings.setBooleanIfNotNull(ANALYZER_OSSINDEX_USE_CACHE, config.cache.ossIndex)
+    }
+
+    private void overwriteConfig() {
+        config.autoUpdate = Boolean.valueOf(System.getProperty("dependencyCheck.autoUpdate"))
+        config.failOnError = Boolean.valueOf(System.getProperty("dependencyCheck.failOnError"))
+        config.skipTestGroups = Boolean.valueOf(System.getProperty("dependencyCheck.skipTestGroups"))
+        String[] formats = System.getProperty("dependencyCheck.formats").split(",")
+        for (String e : formats) {
+            config.formats.add(e.trim())
+        }
+        // println("--- autoUpdate: ${config.autoUpdate}")
+        // println("--- failOnError: ${config.failOnError}")
+        // println("--- skipTestGroups: ${config.failOnError}")
+        // println("--- formats: ${config.formats}")
+        if (config.analyzers != null) {
+            config.analyzers.centralEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.centralEnabled"))
+            config.analyzers.nexusEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nexusEnabled"))
+            config.analyzers.pyDistributionEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.pyDistributionEnabled"))
+            config.analyzers.pyPackageEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.pyPackageEnabled"))
+            config.analyzers.rubygemsEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.rubygemsEnabled"))
+            config.analyzers.opensslEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.opensslEnabled"))
+            config.analyzers.nuspecEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nuspecEnabled"))
+            config.analyzers.assemblyEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.assemblyEnabled"))
+            config.analyzers.nugetconfEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nugetconfEnabled"))
+            config.analyzers.msbuildEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.msbuildEnabled"))
+            config.analyzers.cmakeEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.cmakeEnabled"))
+            config.analyzers.autoconfEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.autoconfEnabled"))
+            config.analyzers.composerEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.composerEnabled"))
+            config.analyzers.cpanEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.cpanEnabled"))
+            config.analyzers.nodeEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nodeEnabled"))
+            config.analyzers.cocoapodsEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.cocoapodsEnabled"))
+            config.analyzers.swiftEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.swiftEnabled"))
+            config.analyzers.swiftPackageResolvedEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.swiftPackageResolvedEnabled"))
+            config.analyzers.bundleAuditEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.bundleAuditEnabled"))
+            config.analyzers.golangDepEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.golangDepEnabled"))
+            config.analyzers.golangModEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.golangModEnabled"))
+            // println("--- analyzers.centralEnabled: ${config.analyzers.centralEnabled}")
+            // println("--- analyzers.nexusEnabled: ${config.analyzers.nexusEnabled}")
+            // println("--- analyzers.pyDistributionEnabled: ${config.analyzers.pyDistributionEnabled}")
+            // println("--- analyzers.pyPackageEnabled: ${config.analyzers.pyPackageEnabled}")
+            // println("--- analyzers.rubygemsEnabled: ${config.analyzers.rubygemsEnabled}")
+            // println("--- analyzers.opensslEnabled: ${config.analyzers.opensslEnabled}")
+            // println("--- analyzers.nuspecEnabled: ${config.analyzers.nuspecEnabled}")
+            // println("--- analyzers.assemblyEnabled: ${config.analyzers.assemblyEnabled}")
+            // println("--- analyzers.nugetconfEnabled: ${config.analyzers.nugetconfEnabled}")
+            // println("--- analyzers.msbuildEnabled: ${config.analyzers.msbuildEnabled}")
+            // println("--- analyzers.cmakeEnabled: ${config.analyzers.cmakeEnabled}")
+            // println("--- analyzers.autoconfEnabled: ${config.analyzers.autoconfEnabled}")
+            // println("--- analyzers.composerEnabled: ${config.analyzers.composerEnabled}")
+            // println("--- analyzers.cpanEnabled: ${config.analyzers.cpanEnabled}")
+            // println("--- analyzers.nodeEnabled: ${config.analyzers.nodeEnabled}")
+            // println("--- analyzers.cocoapodsEnabled: ${config.analyzers.cocoapodsEnabled}")
+            // println("--- analyzers.swiftEnabled: ${config.analyzers.swiftEnabled}")
+            // println("--- analyzers.swiftPackageResolvedEnabled: ${config.analyzers.swiftPackageResolvedEnabled}")
+            // println("--- analyzers.bundleAuditEnabled: ${config.analyzers.bundleAuditEnabled}")
+            // println("--- analyzers.golangDepEnabled: ${config.analyzers.golangDepEnabled}")
+            // println("--- analyzers.golangModEnabled: ${config.analyzers.golangModEnabled}")
+            if (config.analyzers.nodeAudit != null) {
+                config.analyzers.nodeAudit.enabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nodeAudit.enabled"))
+                // println("--- analyzers.nodeAudit.enabled: ${config.analyzers.nodeAudit.enabled}")
+            }
+            if (config.analyzers.retirejs != null) {
+                config.analyzers.retirejs.enabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.retirejs.enabled"))
+                // println("--- analyzers.retirejs.enabled: ${config.analyzers.retirejs.enabled}")
+            }
+            if (config.analyzers.ossIndex != null) {
+                config.analyzers.ossIndex.enabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.ossIndex.enabled"))
+                // println("--- analyzers.ossIndex.enabled: ${config.analyzers.ossIndex.enabled}")
+            }
+        }
     }
 
     private void configureSlack(Settings settings) {

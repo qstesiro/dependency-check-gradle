@@ -23,7 +23,8 @@ ext {
 }
 
 group = 'org.owasp'
-version = "${odcVersion}"
+// version = "${odcVersion}"
+version = "7.1.2.1"
 
 buildscript {
     repositories {
@@ -46,6 +47,17 @@ apply plugin: 'signing'
 apply plugin: 'project-report'
 apply plugin: 'build-dashboard'
 apply plugin: 'com.gradle.plugin-publish'
+
+// publishing {
+//     publications {
+//         maven(MavenPublication) {
+//             groupId = 'org.owasp'
+//             artifactId = 'dependency-check-gradle'
+//             version = '7.1.2.1'
+//             from components.java
+//         }
+//     }
+// }
 
 repositories {
     mavenLocal()
@@ -89,53 +101,73 @@ javadoc {
 
 publishing {
     publications {
-        pluginPublication (MavenPublication) {
+        release(MavenPublication) {
             groupId "$group"
             artifactId 'dependency-check-gradle'
             version "$version"
-            from components.java
-            pom {
-                name = 'dependency-check-gradle'
-                description = 'OWASP dependency-check gradle plugin is a software ' +
-                        'composition analysis tool used to find known vulnerable dependencies.'
-
-                url = 'https://jeremylong.github.io/DependencyCheck/'
-
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'https://github.com/dependency-check/dependency-check-gradle/blob/main/LICENSE.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'jlong'
-                        name = 'Jeremy Long'
-                        email = 'jeremy.long@owasp.org'
-                    }
-                }
-                scm {
-                    url = 'https://github.com/dependency-check/dependency-check-gradle'
-                    connection = 'scm:git:https://github.com/dependency-check/dependency-check-gradle.git'
-                    developerConnection = 'scm:git:https://github.com/dependency-check/dependency-check-gradle.git'
-                }
-            }
         }
     }
     repositories {
         maven {
-            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            allowInsecureProtocol true
+            url mavenHost
             credentials {
-                username sonatypeUsername
-                password sonatypePassword
+                username mavenUsername
+                password mavenPassword
             }
         }
     }
 }
 
-signing {
-    sign publishing.publications.pluginPublication
-}
+// publishing {
+//     publications {
+//         pluginPublication (MavenPublication) {
+//             groupId "$group"
+//             artifactId 'dependency-check-gradle'
+//             version "$version"
+//             from components.java
+//             pom {
+//                 name = 'dependency-check-gradle'
+//                 description = 'OWASP dependency-check gradle plugin is a software ' +
+//                         'composition analysis tool used to find known vulnerable dependencies.'
+
+//                 url = 'https://jeremylong.github.io/DependencyCheck/'
+
+//                 licenses {
+//                     license {
+//                         name = 'The Apache License, Version 2.0'
+//                         url = 'https://github.com/dependency-check/dependency-check-gradle/blob/main/LICENSE.txt'
+//                     }
+//                 }
+//                 developers {
+//                     developer {
+//                         id = 'jlong'
+//                         name = 'Jeremy Long'
+//                         email = 'jeremy.long@owasp.org'
+//                     }
+//                 }
+//                 scm {
+//                     url = 'https://github.com/dependency-check/dependency-check-gradle'
+//                     connection = 'scm:git:https://github.com/dependency-check/dependency-check-gradle.git'
+//                     developerConnection = 'scm:git:https://github.com/dependency-check/dependency-check-gradle.git'
+//                 }
+//             }
+//         }
+//     }
+//     repositories {
+//         maven {
+//             url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+//             credentials {
+//                 username sonatypeUsername
+//                 password sonatypePassword
+//             }
+//         }
+//     }
+// }
+
+// signing {
+//     sign publishing.publications.pluginPublication
+// }
 
 pluginBundle {
     website = 'http://jeremylong.github.io/DependencyCheck/dependency-check-gradle/index.html'
