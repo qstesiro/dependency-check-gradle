@@ -12,7 +12,7 @@ out/
 build/
 bin/
 
+gradle.properties
+
 gradle-app.setting
 /.nb-gradle/
-
-./gradle.properties
