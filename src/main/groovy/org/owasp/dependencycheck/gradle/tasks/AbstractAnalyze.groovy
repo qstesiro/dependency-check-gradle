@@ -24,6 +24,8 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ModuleVersionIdentifier
 import org.gradle.api.artifacts.ResolvedArtifact
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
+import org.gradle.api.artifacts.result.ResolvedComponentResult
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
@@ -462,6 +464,33 @@ abstract class AbstractAnalyze extends ConfiguredTask {
                     }
                 }
             }
+        }
+    }
+
+    protected void visitByComponent(ResolvedComponentResult component, String indent) {
+        if (component != null) {
+            println("${indent} ${component.moduleVersion.toString()}")
+            indent += "  "
+            for (e in component.dependencies) {
+                visitByComponent(e.selected, indent)
+            }
+        }
+    }
+
+    protected void visitByDependency(ResolvedDependencyResult dependency, String indent) {
+        if (dependency != null) {
+            if (dependency != null &&
+                dependency.selected != null) {
+                println("${indent} ${dependency.selected.moduleVersion.toString()}")
+            }
+            // indent += "  "
+            // if (dependency != null &&
+            //     dependency.selected != null &&
+            //     dependency.selected.dependencies != null) {
+            //     for (e in dependency.selected.dependencies) {
+            //         visitByDependency(e, indent)
+            //     }
+            // }
         }
     }
 

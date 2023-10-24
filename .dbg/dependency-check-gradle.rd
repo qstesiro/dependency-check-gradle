@@ -1,14 +1,15 @@
 # 编译
 {
     # 生成pom文件
-    gradle generatePomFileForPluginMavenPublication --console plain
+    alias generatePom="./gradlew generatePomFileForPluginMavenPublication --console plain"
 
     # 本地安装
-    gradle publishPluginMavenPublicationToMavenLocal --console plain
+    alias publishToLocal="./gradlew publishPluginMavenPublicationToMavenLocal --console plain"
 
     # 私服安装
-    gradle publishPluginMavenPublicationToMavenRepository --console plain
+    alias pushlishToMaven="./gradlew publishPluginMavenPublicationToMavenRepository --console plain"
 
-    alias clean='gradle clean --exclude-task=test --console=plain --info'
-    alias build='gradle build --exclude-task=test --console=plain --info'
+    alias clean="./gradlew clean --exclude-task=test --console=plain --info"
+    alias build="./gradlew build --exclude-task=test --console=plain --info &&
+                 publishToLocal"
 }

@@ -182,71 +182,109 @@ abstract class ConfiguredTask extends DefaultTask {
     }
 
     private void overwriteConfig() {
-        config.autoUpdate = Boolean.valueOf(System.getProperty("dependencyCheck.autoUpdate"))
-        config.failOnError = Boolean.valueOf(System.getProperty("dependencyCheck.failOnError"))
-        config.skipTestGroups = Boolean.valueOf(System.getProperty("dependencyCheck.skipTestGroups"))
-        String[] formats = System.getProperty("dependencyCheck.formats").split(",")
-        for (String e : formats) {
-            config.formats.add(e.trim())
+        // Update & Purge
+        if (System.getProperty("dependencyCheck.cveValidForHours") != null) {
+            config.cveValidForHours = Integer.valueOf(System.getProperty("dependencyCheck.cveValidForHours"))
         }
-        // println("--- autoUpdate: ${config.autoUpdate}")
-        // println("--- failOnError: ${config.failOnError}")
-        // println("--- skipTestGroups: ${config.failOnError}")
-        // println("--- formats: ${config.formats}")
+        if (config.cve != null) {
+            if (System.getProperty("dependencyCheck.cve.waitTime") != null) {
+                config.cve.waitTime = Integer.valueOf(System.getProperty("dependencyCheck.cve.waitTime"))
+            }
+        }
+        // Aggreate
+        if (System.getProperty("dependencyCheck.autoUpdate") != null) {
+            config.autoUpdate = Boolean.valueOf(System.getProperty("dependencyCheck.autoUpdate"))
+        }
+        if (System.getProperty("dependencyCheck.failOnError") != null) {
+            config.failOnError = Boolean.valueOf(System.getProperty("dependencyCheck.failOnError"))
+        }
+        if (System.getProperty("dependencyCheck.skipTestGroups") != null) {
+            config.skipTestGroups = Boolean.valueOf(System.getProperty("dependencyCheck.skipTestGroups"))
+        }
+        String formats = System.getProperty("dependencyCheck.formats");
+        if (formats != null && !formats.equals("")) {
+            for (String e : formats.split(",")) {
+                config.formats.add(e.trim())
+            }
+        }
         if (config.analyzers != null) {
-            config.analyzers.centralEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.centralEnabled"))
-            config.analyzers.nexusEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nexusEnabled"))
-            config.analyzers.pyDistributionEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.pyDistributionEnabled"))
+            if (System.getProperty("dependencyCheck.analyzers.centralEnabled") != null) {
+                config.analyzers.centralEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.centralEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.nexusEnabled") != null) {
+                config.analyzers.nexusEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nexusEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.pyDistributionEnabled") != null) {
+                config.analyzers.pyDistributionEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.pyDistributionEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.pyPackageEnabled") != null) {
             config.analyzers.pyPackageEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.pyPackageEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.rubygemsEnabled") != null) {
             config.analyzers.rubygemsEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.rubygemsEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.opensslEnabled") != null) {
             config.analyzers.opensslEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.opensslEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.nuspecEnabled") != null) {
             config.analyzers.nuspecEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nuspecEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.assemblyEnabled") != null) {
             config.analyzers.assemblyEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.assemblyEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.nugetconfEnabled") != null) {
             config.analyzers.nugetconfEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nugetconfEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.msbuildEnabled") != null) {
             config.analyzers.msbuildEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.msbuildEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.cmakeEnabled") != null) {
             config.analyzers.cmakeEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.cmakeEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.autoconfEnabled") != null) {
             config.analyzers.autoconfEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.autoconfEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.composerEnabled") != null) {
             config.analyzers.composerEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.composerEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.cpanEnabled") != null) {
             config.analyzers.cpanEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.cpanEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.nodeEnabled") != null) {
             config.analyzers.nodeEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nodeEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.cocoapodsEnabled") != null) {
             config.analyzers.cocoapodsEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.cocoapodsEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.swiftEnabled") != null) {
             config.analyzers.swiftEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.swiftEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.swiftPackageResolvedEnabled") != null) {
             config.analyzers.swiftPackageResolvedEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.swiftPackageResolvedEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.bundleAuditEnabled") != null) {
             config.analyzers.bundleAuditEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.bundleAuditEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.golangDepEnabled") != null) {
             config.analyzers.golangDepEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.golangDepEnabled"))
+            }
+            if (System.getProperty("dependencyCheck.analyzers.golangModEnabled") != null) {
             config.analyzers.golangModEnabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.golangModEnabled"))
-            // println("--- analyzers.centralEnabled: ${config.analyzers.centralEnabled}")
-            // println("--- analyzers.nexusEnabled: ${config.analyzers.nexusEnabled}")
-            // println("--- analyzers.pyDistributionEnabled: ${config.analyzers.pyDistributionEnabled}")
-            // println("--- analyzers.pyPackageEnabled: ${config.analyzers.pyPackageEnabled}")
-            // println("--- analyzers.rubygemsEnabled: ${config.analyzers.rubygemsEnabled}")
-            // println("--- analyzers.opensslEnabled: ${config.analyzers.opensslEnabled}")
-            // println("--- analyzers.nuspecEnabled: ${config.analyzers.nuspecEnabled}")
-            // println("--- analyzers.assemblyEnabled: ${config.analyzers.assemblyEnabled}")
-            // println("--- analyzers.nugetconfEnabled: ${config.analyzers.nugetconfEnabled}")
-            // println("--- analyzers.msbuildEnabled: ${config.analyzers.msbuildEnabled}")
-            // println("--- analyzers.cmakeEnabled: ${config.analyzers.cmakeEnabled}")
-            // println("--- analyzers.autoconfEnabled: ${config.analyzers.autoconfEnabled}")
-            // println("--- analyzers.composerEnabled: ${config.analyzers.composerEnabled}")
-            // println("--- analyzers.cpanEnabled: ${config.analyzers.cpanEnabled}")
-            // println("--- analyzers.nodeEnabled: ${config.analyzers.nodeEnabled}")
-            // println("--- analyzers.cocoapodsEnabled: ${config.analyzers.cocoapodsEnabled}")
-            // println("--- analyzers.swiftEnabled: ${config.analyzers.swiftEnabled}")
-            // println("--- analyzers.swiftPackageResolvedEnabled: ${config.analyzers.swiftPackageResolvedEnabled}")
-            // println("--- analyzers.bundleAuditEnabled: ${config.analyzers.bundleAuditEnabled}")
-            // println("--- analyzers.golangDepEnabled: ${config.analyzers.golangDepEnabled}")
-            // println("--- analyzers.golangModEnabled: ${config.analyzers.golangModEnabled}")
+            }
             if (config.analyzers.nodeAudit != null) {
+                if (System.getProperty("dependencyCheck.analyzers.nodeAudit.enabled") != null) {
                 config.analyzers.nodeAudit.enabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.nodeAudit.enabled"))
-                // println("--- analyzers.nodeAudit.enabled: ${config.analyzers.nodeAudit.enabled}")
+                }
             }
             if (config.analyzers.retirejs != null) {
+                if (System.getProperty("dependencyCheck.analyzers.retirejs.enabled") != null) {
                 config.analyzers.retirejs.enabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.retirejs.enabled"))
-                // println("--- analyzers.retirejs.enabled: ${config.analyzers.retirejs.enabled}")
+                }
             }
             if (config.analyzers.ossIndex != null) {
-                config.analyzers.ossIndex.enabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.ossIndex.enabled"))
-                // println("--- analyzers.ossIndex.enabled: ${config.analyzers.ossIndex.enabled}")
+                if (System.getProperty("dependencyCheck.analyzers.ossIndex.enabled") != null) {
+                    config.analyzers.ossIndex.enabled = Boolean.valueOf(System.getProperty("dependencyCheck.analyzers.ossIndex.enabled"))
+                }
             }
         }
     }
